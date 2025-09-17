@@ -1,0 +1,35 @@
+@media only screen and (min-width:769px)
+{
+  .desktop-web-App {
+  text-align: center;
+}
+  .mobile-web-App{
+    display: none;
+  }
+
+  #desktop-message
+  {
+    background-color: red;
+    color: black;
+  }
+
+}
+
+
+
+@media only screen and (max-width: 768px)
+{
+
+.desktop-web-App{
+  display: none;
+}  
+.mobile-web-App {
+  text-align: center;
+}
+
+
+}
+
+
+
+
