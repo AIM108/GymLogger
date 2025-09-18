@@ -1,0 +1,68 @@
+.content
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position:relative;
+    min-height: 100vh;
+    min-width: auto;
+    background-color: aqua;
+    border: 2px dashed blue;
+}
+
+
+
+
+
+.title
+{
+    background-color: gray;
+}
+
+#navagation-bar-login-page
+{
+  background-color: red;
+  position: absolute;
+  bottom: 5vh;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  
+}
+
+.navigation-bar
+{
+  background-color: green solid;
+  position: absolute;
+  bottom:0;
+  left:0;
+  width: 100%;
+
+}
+
+.navigation-button
+{
+  
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #4679BD;
+  color: white;
+  border: none;
+  text-align: center;
+  line-height: 80px; /* vertically center text */
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 3px gray;
+  overflow: hidden;
+  margin-left: 140px;
+  margin-right: 50px;
+ 
+  
+
+  
+  
+}
