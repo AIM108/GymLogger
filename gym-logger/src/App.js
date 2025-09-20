@@ -6,6 +6,7 @@ import LoginPage from './comps/LoginPage';
 import MenuePage from './comps/MenuePage';
 import WorkOutCompletePage from './comps/WorkOutCompletePage';
 import WorkOutSessionPage from './comps/WorkOutSessionPage';
+import HomePage from './comps/HomePage';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
                 <Route path="/" element={<LoginPage/>} />
-                <Route path="/menue" element={<MenuePage/>} />
+                <Route path="/home" element={<HomePage/>} />
                 <Route path="/workoutsession" element={<WorkOutSessionPage/>} />
                 <Route path="/workoutcomplete" element={<WorkOutCompletePage/>} />
         </Routes>
