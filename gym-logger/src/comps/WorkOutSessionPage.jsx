@@ -47,9 +47,7 @@ function WorkOutSessionPage()
     },[isRunning]);
 
 
-    const [min,setMin] =useState(0);
-    const [hr,setHr] =useState(0);
-    const[sec,setSec] =useState(0);
+
     const[timeFormated,setTimerFormated]=useState("");
     useEffect(()=>{
         let min =0;
@@ -78,6 +76,80 @@ function WorkOutSessionPage()
     },[time]);
 
 
+
+
+    class Exercise
+    {
+        constructor(exerciseName,exerciseType, exerciseFocus)
+        {
+            this.exerciseName =exerciseName;
+            this.exerciseType =exerciseType;
+            this.exerciseFocus =exerciseFocus;
+        }
+    }
+
+    class Set
+    {
+        constructor()
+        {
+            this.isCompleted=false;
+            this.setNumber=0;
+            this.type=null;
+            this.value=null;
+        }
+    }
+
+    class ExecutedExersize
+    {
+        constructor(exercise)
+        {
+            this.exercise = exercise;
+            this.sets=null;
+        }
+    }
+
+    const [exerciseList,setExerciseList]=useState([]);
+    const [exerciseData, setExerciseData]= useState({exerciseName:'None',exerciseType:'None',exerciseFocus:'None'})
+    const inputExercise = useRef({
+        exerciseName: null,
+        exerciseType: null,
+        exerciseFocus: null
+    });
+
+    function handleAddToExecutingExersizeList()
+    {
+        const name =inputExercise.current.exerciseName?.value;
+        const type =inputExercise.current.exerciseType?.value;
+        const focus =inputExercise.current.exerciseFocus?.value;
+        if(name)
+        {
+        const ex = new ExecutedExersize(handleAddExersize(name,type,focus));
+        setExerciseList(prev=>{
+                    const updated = [...prev, ex];
+                    console.log("Updated exercise list:", updated);
+                    return updated;
+                    });
+        
+        }
+        else
+        {
+            console.log("Nothing was added to list array");
+        }
+    }
+    function handleAddExersize(exerciseName,exerciseType,exerciseFocus)
+    {
+        return new Exercise(exerciseName,exerciseType,exerciseFocus);
+
+    }
+    function handleAddSet(executedExersize)
+    {
+        
+
+
+    }
+
+
+
     return(
         <div>
             <header>
@@ -86,9 +158,20 @@ function WorkOutSessionPage()
             </header>
 
             <div className="content">
+                <div className="Temp-remove">
+                    <input type="text" ref={inputeElement => inputExercise.current.exerciseName = inputeElement}/>
+                    <input type="text" ref={inputeElement => inputExercise.current.exerciseType = inputeElement}/>
+                    <input type="text" ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}/>
+
+
+
+                    <button onClick={handleAddToExecutingExersizeList}>Add Exersice to List</button>
+                </div>
+                <div className="time-controls">
                 <button onClick={handleStartTimer}> Start Timer</button>
                 <button onClick={handleStopTimer}>Stop Timer</button>
                 <button onClick={handleEndWorkout}>End Workout</button>
+                </div>
             </div>
 
             <footer>
