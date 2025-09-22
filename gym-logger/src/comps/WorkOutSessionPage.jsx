@@ -88,12 +88,12 @@ function WorkOutSessionPage()
         }
     }
 
-    class Set
+    class WorkoutSet
     {
         constructor()
         {
             this.isCompleted=false;
-            this.setNumber=0;
+            this.setNumber=1;
             this.type=null;
             this.value=null;
         }
@@ -104,17 +104,18 @@ function WorkOutSessionPage()
         constructor(exercise)
         {
             this.exercise = exercise;
-            this.sets=null;
+            this.sets=[new WorkoutSet()];
         }
     }
-
+    
     const [exerciseList,setExerciseList]=useState([]);
     const [exerciseData, setExerciseData]= useState({exerciseName:'None',exerciseType:'None',exerciseFocus:'None'})
     const inputExercise = useRef({
-        exerciseName: null,
-        exerciseType: null,
-        exerciseFocus: null
-    });
+            exerciseName: null,
+            exerciseType: null,
+            exerciseFocus: null
+        });
+   
 
     function handleAddToExecutingExersizeList()
     {
@@ -127,6 +128,7 @@ function WorkOutSessionPage()
         setExerciseList(prev=>{
                     const updated = [...prev, ex];
                     console.log("Updated exercise list:", updated);
+                   
                     return updated;
                     });
         
@@ -141,10 +143,25 @@ function WorkOutSessionPage()
         return new Exercise(exerciseName,exerciseType,exerciseFocus);
 
     }
-    function handleAddSet(executedExersize)
+    function handleAddSet(indexToUpdate)
     {
         
+       setExerciseList(prev=>
+        prev.map((item,index)=>{
+            if(index ===indexToUpdate)
+            {
+                const lastSetNumber =item.sets && item.sets.length > 0? item.sets[item.sets.length - 1].setNumber: 0;
+                const newSet = new WorkoutSet();
+                newSet.setNumber = lastSetNumber+1;
 
+
+                const updatedSets = item.sets?[...item.sets, newSet]: [newSet];
+                return {...item, sets: updatedSets};
+            }
+            return item;
+            
+           })
+       );
 
     }
 
@@ -158,14 +175,23 @@ function WorkOutSessionPage()
             </header>
 
             <div className="content">
-                <div className="Temp-remove">
+                <div className="Temp-reorganize">
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseName = inputeElement}/>
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseType = inputeElement}/>
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}/>
 
 
-
+                    <div className="exerciseList">
+                        {exerciseList.map((item, index) => (
+                            <div key={index} className="exerciseItem">
+                            <h2>{item.exercise.exerciseName}</h2>
+                            {item.sets.map((item)=>(<h4>{item.setNumber}</h4>))}
+                            <button onClick={() => handleAddSet(index)}>Add Set</button>
+                            </div>
+                        ))}
+                    </div>
                     <button onClick={handleAddToExecutingExersizeList}>Add Exersice to List</button>
+                    
                 </div>
                 <div className="time-controls">
                 <button onClick={handleStartTimer}> Start Timer</button>
