@@ -92,10 +92,10 @@ function WorkOutSessionPage()
     {
         constructor()
         {
-            this.isCompleted=false;
+            this.isCompleted="NotCompleted";
             this.setNumber=1;
-            this.type=null;
-            this.value=null;
+            this.type="REPS";
+            this.value=0;
         }
     }
 
@@ -165,6 +165,45 @@ function WorkOutSessionPage()
 
     }
 
+    function handleOnChangeCheckBox(isSetComplete,exerciseIndexToUpdate,setIndexToUpdate)
+    {
+
+
+        setExerciseList(currentExerciseList=>currentExerciseList.map((item,index)=>{
+
+            
+            if(index === exerciseIndexToUpdate)
+            {
+                const updatedSets=item.sets.map((set,setindex)=>
+                {
+                    if(setindex === setIndexToUpdate)
+                    {
+                        
+                            if(isSetComplete === true)
+                            {
+                                return {...set,isCompleted:"Completed"}
+
+                            }
+                            else
+                            {
+                                return {...set,isCompleted:"NotCompleted"}
+
+                            }
+                    }
+                    return set;
+                })
+
+                return{...item,sets:updatedSets}
+            }
+            return item;
+        }));
+
+
+
+
+        
+    }
+
 
 
     return(
@@ -179,13 +218,33 @@ function WorkOutSessionPage()
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseName = inputeElement}/>
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseType = inputeElement}/>
                     <input type="text" ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}/>
+                    
 
 
                     <div className="exerciseList">
                         {exerciseList.map((item, index) => (
                             <div key={index} className="exerciseItem">
                             <h2>{item.exercise.exerciseName}</h2>
-                            {item.sets.map((item)=>(<h4>{item.setNumber}</h4>))}
+                            {item.sets.map((set,setIndex)=>(
+                                <div className="exercise-set" key={`exercise-${index}-set-${setIndex}`}>
+
+                                    <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem', padding: 0, margin: 0, alignItems: 'center' }}>
+                                        <li><input type="checkbox" onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
+                                        <li><h4>SET {set.setNumber}</h4></li>
+                                        <li><h4>{set.type}</h4></li>
+                                        <li><input type="number"/></li>
+                                    </ul>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                                
+                                
+                                
+                                
+                                ))}
                             <button onClick={() => handleAddSet(index)}>Add Set</button>
                             </div>
                         ))}
