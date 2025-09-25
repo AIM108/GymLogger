@@ -1,4 +1,4 @@
-import "./homeStyle.css"
+
 import NavigationButton from "./buttons/NavigationButton";
 import React,{ useState, useEffect} from "react";
 
@@ -79,28 +79,89 @@ const buttonsList = navigationButtons.map(
     (buttonElement, index) => (<NavigationButton key={index} name={buttonElement.name} navigationRout={buttonElement.navigationRout}/>)
 );
 
+const homePageContainerStyle=
+{
+    position:"relative",
+        height:"100vh",
+        width:"100vw",
+        backgroundColor:"#D6D6D6"
+}
+const homePageHeaderStyle=
+{
+        position:"absolute",
+        top:"30%",
+        left:"50%",
+        transform:"translateX(-50%)"
+}
+
+
+const navigationButtonContainerStyle=
+{
+    position:"absolute",
+    width:"100vw",
+    bottom:"10%",
+    display:"flex",
+    
+  
+ 
+}
+
+
+const navigationButtonStyle=
+{
+    position:"relative",
+    left:"50%",
+    transform:"translateX(-50%)"
+    
+}
+
+const leftNavOptionButtonStyle=
+{
+    position:"absolute",
+    left:"0px",
+    marginLeft:"10vw",
+    fontSize:"64px",
+    backgroundColor:"#D6D6D6",
+    border:"none"
+
+    
+}
+
+const rightNavOptionButtonStyle=
+{
+    position:"absolute",
+    right:"0px",
+    marginRight:"10vw",
+    fontSize:"64px",
+    backgroundColor:"#D6D6D6",
+    border:"none"
+
+
+}
+
 
 
 
 
 return(
-    <div className="home-page-container">
-        <header>
-            
-        </header>
-        <div className="content">
-            <h1 className="page-header">{pageInView}</h1>
-            <div className="navigation-button-container">
-                <button onClick={showPrevButton }>Left</button>
-                <button onClick={showNextButton}>Right</button>
-                <div className="navigation-button">
+    <div className="home-page-container" style={homePageContainerStyle}>
+
+        
+            <h1 className="page-header" style={homePageHeaderStyle}>{pageInView}</h1>
+               
+               
+               
+                <div className="navigation-button-container" style={navigationButtonContainerStyle}>
+                <button style={leftNavOptionButtonStyle} onClick={showPrevButton }>←</button>
+                
+                <div className="navigation-button" style={navigationButtonStyle}>
                     {console.log('Current buttonIndex: ',buttonIndex)}
                     {buttonsList[buttonIndex]}
                 </div>
-                
+                <button style={rightNavOptionButtonStyle} onClick={showNextButton}>→</button>
                
             </div>
-        </div>
+        
 
     </div>
 );
