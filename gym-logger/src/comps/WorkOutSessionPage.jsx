@@ -3,7 +3,10 @@ import React,{ useState, useEffect, useRef} from "react";
 function WorkOutSessionPage()
 {
     const [isRunning, setIsRunning] =useState(false);
-    const [time,setTime] = useState(0);
+    const [time,setTime] = useState(()=>{
+        const savedTime = localStorage.getItem("RawTime");
+        return savedTime? parseInt(savedTime):0;
+    });
     const intervalRef = useRef(null);
 
 
@@ -15,8 +18,16 @@ function WorkOutSessionPage()
     {
         setIsRunning(false);
     }
+    function handleClearTimer()
+    {
+        setIsRunning(false);
+        console.log(time);
+        setTime(0);
+
+    }
     function handleEndWorkout()
     {
+        localStorage.clear();
         setIsRunning(false);
         console.log(time);
         setTime(0);
@@ -71,6 +82,7 @@ function WorkOutSessionPage()
 
 
         }
+        localStorage.setItem("RawTime",time);
         setTimerFormated(`${hr}:${min}:${sec}`);
         
     },[time]);
@@ -204,21 +216,102 @@ function WorkOutSessionPage()
         
     }
 
+    const workoutSessionPageContentStyle =
+    {
+        position:"relative",
+        display:"flex",
+        flexDirection:"column",
+        backgroundColor:"#D6D6D6",
+        width:"100vw",
+        height:"100vh"
+
+    }
+    const workoutSessionTitleStyle =
+    {
+        
+        display:"flex",
+        flexDirection:"column",
+        backgroundColor:"#D6D6D6",
+        border:"solid black 2px",
+   
+    }
+    const timerContainerStyle=
+    {
+        
+        border:"solid black 2px"
+    }
+
+    const mainContainerStyle=
+    {
+        
+        backgroundColor:"#D6D6D6",
+    }
+
+    const inputWorkoutContainerStyle=
+    {
+        
+        display:"flex",
+        width:"100vw",
+        
+        boxSizing:"border-box",
+        top:"0",
+        left:"0",
+        
+        padding:"2px",
+        
+
+    }
+
+    const inputWorkoutStyle=
+    {
+        flex:"1",
+        minWidth:"0"
+    }
+
+    const addExersiceStyle=
+    {
+        position:"relative"
+    }
+
+
+
+  
+
 
 
     return(
-        <div>
-            <header>
-                <h1 className="title" id="workoutsession-page">WorkOutSession Page</h1>
-                <h1>{timeFormated}</h1>
+        <div className="workoutsession-container" style={workoutSessionPageContentStyle}>
+            <header className="workoutsession-header"id="workoutsession-page-content"  >
+                <h1 className="title" id="workoutsession-page-content" style={workoutSessionTitleStyle}>WorkOutSession Page</h1>
+                <h1 className="timer" id="workout-timer" style={timerContainerStyle}>{timeFormated}</h1>
             </header>
 
-            <div className="content">
-                <div className="Temp-reorganize">
-                    <input type="text" ref={inputeElement => inputExercise.current.exerciseName = inputeElement}/>
-                    <input type="text" ref={inputeElement => inputExercise.current.exerciseType = inputeElement}/>
-                    <input type="text" ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}/>
+            <div className="main-content" style={mainContainerStyle}>
+                <div className="exercise-content">
+                    <div className="inputWorkoutContainer" id="inputWorkout-active-workoutsession" style={inputWorkoutContainerStyle}>
+                        <input className="inputWorkout" id="workout-name"style={inputWorkoutStyle} type="text" ref={inputeElement => inputExercise.current.exerciseName = inputeElement}/>
+                        
+                        
+                        <select style={inputWorkoutStyle} ref={inputeElement => inputExercise.current.exerciseType = inputeElement}>
+                            <option value="">Select Type</option>
+                            <option value="REPS">REPS</option>
+                            <option value="TIME">TIME</option>
+                        </select>
+                        
+                        <select style={inputWorkoutStyle} ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}>
+                            <option value="">Select Focus</option>
+                            <option value="Weight">Weight</option>
+                            <option value="Cardio">Cardio</option>
+                        </select>
+                        
+                        
+                        
+                        
+                        
+                       
                     
+                    </div>
+                    <button className="add-exersice-button" style={addExersiceStyle} onClick={handleAddToExecutingExersizeList}>Add Exersice to List</button>
 
 
                     <div className="exerciseList">
@@ -249,18 +342,17 @@ function WorkOutSessionPage()
                             </div>
                         ))}
                     </div>
-                    <button onClick={handleAddToExecutingExersizeList}>Add Exersice to List</button>
+                    
                     
                 </div>
                 <div className="time-controls">
                 <button onClick={handleStartTimer}> Start Timer</button>
                 <button onClick={handleStopTimer}>Stop Timer</button>
+                <button onClick={handleClearTimer}>Clear Timer</button>
                 <button onClick={handleEndWorkout}>End Workout</button>
                 </div>
             </div>
 
-            <footer>
-            </footer>
         </div>
 
     );
