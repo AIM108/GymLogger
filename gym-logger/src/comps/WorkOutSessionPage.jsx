@@ -102,11 +102,11 @@ function WorkOutSessionPage()
 
     class WorkoutSet
     {
-        constructor()
+        constructor(type)
         {
             this.isCompleted="NotCompleted";
             this.setNumber=1;
-            this.type="REPS";
+            this.type=type;
             this.value=0;
         }
     }
@@ -116,7 +116,7 @@ function WorkOutSessionPage()
         constructor(exercise)
         {
             this.exercise = exercise;
-            this.sets=[new WorkoutSet()];
+            this.sets=[new WorkoutSet(exercise.exerciseType)];
         }
     }
     
@@ -186,7 +186,7 @@ function WorkOutSessionPage()
             if(index ===indexToUpdate)
             {
                 const lastSetNumber =item.sets && item.sets.length > 0? item.sets[item.sets.length - 1].setNumber: 0;
-                const newSet = new WorkoutSet();
+                const newSet = new WorkoutSet(item.exercise.exerciseType);
                 newSet.setNumber = lastSetNumber+1;
 
 
@@ -250,6 +250,11 @@ function WorkOutSessionPage()
         
     }
 
+    function handleOnChangeValueBox(value,exerciseIndexToUpdate,setIndexToUpdate)
+    {
+        
+    }
+
     const workoutSessionPageContentStyle =
     {
         position:"relative",
@@ -307,6 +312,11 @@ function WorkOutSessionPage()
         position:"relative"
     }
 
+    const setValueInputStyle=
+    {
+        width:"30px"
+    }
+
 
 
   
@@ -356,10 +366,10 @@ function WorkOutSessionPage()
                                 <div className="exercise-set" key={`exercise-${index}-set-${setIndex}`}>
 
                                     <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem', padding: 0, margin: 0, alignItems: 'center' }}>
-                                        <li><input type="checkbox" onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
+                                        <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
                                         <li><h4>{set.type}</h4></li>
-                                        <li><input type="number"/></li>
+                                        <li><input type="number" style={setValueInputStyle}/></li>
                                     </ul>
                                     
                                     

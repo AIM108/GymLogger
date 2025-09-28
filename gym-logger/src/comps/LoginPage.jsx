@@ -1,15 +1,23 @@
 
 import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
 
 
 function LoginPage()
-{
+{   const [userName,setUserName] = useState("");
+    const [userPassword,setPassword] = useState("");
+
     const navigate = useNavigate();
 
     function handleOnClick()
     {
+        if(true)
+        {
+            console.log("UserName :",userName);
+            console.log("Password :",userPassword);
+            navigate('/home');
+        }
         
-        navigate('/home');
     }
 
     const loginPageContainer=
@@ -63,8 +71,8 @@ function LoginPage()
             <h1 id="page-title" style={pageTitleStyle}>Gym Logger</h1>
             <div className="login-section" style={loginSectionStyle}>
                 <h2 id="login-tile-title">Login</h2>
-                <input className="loginInput" style={loginInputStyle} type="text"/>
-                <input className="loginInput" style={loginInputStyle} type="text"/>
+                <input className="loginInput" style={loginInputStyle} type="text" value={userName} onChange={e =>setUserName(e.target.value)}/>
+                <input className="loginInput" style={loginInputStyle} type="text" value={userPassword} onChange={e=>setPassword(e.target.value)}/>
                 <button onClick={handleOnClick}>SignIn</button>
             </div>
            
