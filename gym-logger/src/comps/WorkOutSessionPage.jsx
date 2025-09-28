@@ -120,14 +120,30 @@ function WorkOutSessionPage()
         }
     }
     
-    const [exerciseList,setExerciseList]=useState([]);
-    const [exerciseData, setExerciseData]= useState({exerciseName:'None',exerciseType:'None',exerciseFocus:'None'})
+    const [exerciseList,setExerciseList]=useState( ()=>{
+        const currentState = localStorage.getItem("ExerciseList");
+        const loadExList = JSON.parse(currentState);
+        return loadExList?loadExList:[];
+
+    });
+
     const inputExercise = useRef({
             exerciseName: null,
             exerciseType: null,
             exerciseFocus: null
         });
    
+
+    function captureCurrentState(currentList)
+    {
+        const currentState = currentList;
+        const itemToCapture = JSON.stringify(currentState);
+        localStorage.setItem("ExerciseList",itemToCapture);
+    }
+
+
+
+
 
     function handleAddToExecutingExersizeList()
     {
@@ -140,7 +156,7 @@ function WorkOutSessionPage()
         setExerciseList(prev=>{
                     const updated = [...prev, ex];
                     console.log("Updated exercise list:", updated);
-                   
+                    captureCurrentState(updated);
                     return updated;
                     });
         
@@ -149,7 +165,14 @@ function WorkOutSessionPage()
         {
             console.log("Nothing was added to list array");
         }
+        
     }
+
+
+
+
+
+
     function handleAddExersize(exerciseName,exerciseType,exerciseFocus)
     {
         return new Exercise(exerciseName,exerciseType,exerciseFocus);
@@ -158,8 +181,8 @@ function WorkOutSessionPage()
     function handleAddSet(indexToUpdate)
     {
         
-       setExerciseList(prev=>
-        prev.map((item,index)=>{
+       setExerciseList(prev=>{
+        const updated =prev.map((item,index)=>{
             if(index ===indexToUpdate)
             {
                 const lastSetNumber =item.sets && item.sets.length > 0? item.sets[item.sets.length - 1].setNumber: 0;
@@ -173,7 +196,12 @@ function WorkOutSessionPage()
             return item;
             
            })
+           captureCurrentState(updated);
+           return updated;}
        );
+
+
+     
 
     }
 
@@ -181,7 +209,10 @@ function WorkOutSessionPage()
     {
 
 
-        setExerciseList(currentExerciseList=>currentExerciseList.map((item,index)=>{
+        setExerciseList(currentExerciseList=>{
+            
+            
+            const updated =currentExerciseList.map((item,index)=>{
 
             
             if(index === exerciseIndexToUpdate)
@@ -208,7 +239,10 @@ function WorkOutSessionPage()
                 return{...item,sets:updatedSets}
             }
             return item;
-        }));
+        })
+        captureCurrentState(updated);
+        return updated;
+    });
 
 
 
