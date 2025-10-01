@@ -20,12 +20,22 @@ function LoginPage()
             const data = await response.json();
             const body =JSON.parse(data.body);
 
-            const accessToken = body.token;
-            const message = body.message;
-            localStorage.setItem("token",accessToken);
-            console.log("Message: ",message);
-            navigate("/home");
+            if(data.statusCode === 404)
+            {
+                console.log(body.error);
+            }
+            else
+            {
+                const accessToken = body.token;
+                const message = body.message;
+                localStorage.setItem("token",accessToken);
+                console.log("Message: ",message);
+                navigate("/home");
 
+
+            }
+
+            
 
 
 

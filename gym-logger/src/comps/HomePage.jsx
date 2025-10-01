@@ -52,7 +52,8 @@ const [buttonIndex, setButtonIndex] = useState(0);
                 case 0:
                     setPageInView(navigationButtons[buttonIndex].id);
                     console.log('Current Title: ', navigationButtons[buttonIndex].id,' Current index:',buttonIndex);
-                    localStorage.clear();
+                    localStorage.removeItem('time');
+                    localStorage.removeItem('ExerciseList');
                     break;
                 case 1:
                     setPageInView(navigationButtons[buttonIndex].id)
