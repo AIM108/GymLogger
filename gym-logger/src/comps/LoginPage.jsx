@@ -9,14 +9,32 @@ function LoginPage()
 
     const navigate = useNavigate();
 
-    function handleOnClick()
+    async function handleOnClick()
     {
-        if(true)
-        {
-            console.log("UserName :",userName);
-            console.log("Password :",userPassword);
-            navigate('/home');
+        try{
+            const response = await fetch("https://us6apt7pwh.execute-api.us-east-2.amazonaws.com/GymLogger/",{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({username:userName, userpassword:userPassword})
+            });
+            const data = await response.json();
+            const body =JSON.parse(data.body);
+
+            const accessToken = body.token;
+            const message = body.message;
+            localStorage.setItem("token",accessToken);
+            console.log("Message: ",message);
+            navigate("/home");
+
+
+
+
         }
+        catch(error)
+        {
+            console.log(error);
+        }
+       
         
     }
 
