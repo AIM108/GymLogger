@@ -108,7 +108,8 @@ function LoginPage()
     {
         marginTop:"10px",
         border:"1px outset black",
-        fontFamily:"Andale Mono, monospace"
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
     }
 
 
