@@ -53,6 +53,8 @@ function LoginPage()
         position:"relative",
         height:"100vh",
         width:"100vw",
+        padding:"0",
+        margin:"0",
         backgroundColor:"#D6D6D6"
         
 
@@ -61,9 +63,19 @@ function LoginPage()
     const pageTitleStyle=
     {
         position:"absolute",
-        top:"5%",
-        left:"50%",
-        transform:"translateX(-50%)"
+        top:"0",
+        left:"0",
+        margin:"0",
+        border:"1px outset black",
+        width:"100%",
+        height:"8vh",
+        backgroundColor:"#2208F7",
+        boxSizing:"border-box",
+        color:"white",
+        fontFamily:"Andale Mono, monospace"
+    
+        
+        
         
     }
 
@@ -92,6 +104,13 @@ function LoginPage()
         
     }
 
+    const buttonLoginStyle=
+    {
+        marginTop:"10px",
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace"
+    }
+
 
 
     return(
@@ -101,7 +120,7 @@ function LoginPage()
                 <h2 id="login-tile-title">Login</h2>
                 <input className="loginInput" style={loginInputStyle} type="text" value={userName} onChange={e =>setUserName(e.target.value)}/>
                 <input className="loginInput" style={loginInputStyle} type="text" value={userPassword} onChange={e=>setPassword(e.target.value)}/>
-                <button onClick={handleOnClick}>SignIn</button>
+                <button style={buttonLoginStyle} onClick={handleOnClick}>SignIn</button>
             </div>
            
         </div>
