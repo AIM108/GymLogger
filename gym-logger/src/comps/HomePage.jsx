@@ -91,9 +91,16 @@ const homePageContainerStyle=
 const homePageHeaderStyle=
 {
         position:"absolute",
-        top:"30%",
-        left:"50%",
-        transform:"translateX(-50%)"
+        top:"0",
+        left:"0",
+        width:"100%",
+        height:"8vh",
+        margin:"0",
+        border:"1px outset black",
+        backgroundColor:"#2208F7",
+        boxSizing:"border-box",
+        color:"white",
+        fontFamily:"Andale Mono, monospace"
 }
 
 

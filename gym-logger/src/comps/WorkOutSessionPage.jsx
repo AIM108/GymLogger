@@ -270,20 +270,33 @@ function WorkOutSessionPage()
         
         display:"flex",
         flexDirection:"column",
-        backgroundColor:"#D6D6D6",
-        border:"solid black 2px",
+        top:"0",
+        left:"0",
+        margin:"0",
+        border:"1px outset black",
+        width:"100%",
+        height:"8vh",
+        backgroundColor:"#2208F7",
+        boxSizing:"border-box",
+        color:"white",
+        fontFamily:"Andale Mono, monospace"
+    
    
     }
     const timerContainerStyle=
     {
         
-        border:"solid black 2px"
+        fontFamily:"Andale Mono, monospace",
+
     }
 
     const mainContainerStyle=
     {
-        
+        display:"flex",
+        flexDirection:"column",
+        flex:"1",
         backgroundColor:"#D6D6D6",
+       
     }
 
     const inputWorkoutContainerStyle=
@@ -291,12 +304,11 @@ function WorkOutSessionPage()
         
         display:"flex",
         width:"100vw",
-        
         boxSizing:"border-box",
         top:"0",
         left:"0",
-        
         padding:"2px",
+        
         
 
     }
@@ -304,19 +316,59 @@ function WorkOutSessionPage()
     const inputWorkoutStyle=
     {
         flex:"1",
-        minWidth:"0"
+        minWidth:"0",
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
     }
 
     const addExersiceStyle=
     {
-        position:"relative"
+        position:"relative",
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
+    const setListStyle=
+    { listStyle: 'none', 
+        display: 'flex', 
+        gap: '1rem', 
+        padding: 0, 
+        margin: 0, 
+        alignItems: 'center',
+        justifyContent:"center"
     }
 
     const setValueInputStyle=
     {
-        width:"30px"
+        width:"30px",
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
     }
 
+    const AddSetButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
+    const timeControlsStyle=
+    {
+        marginTop:"auto",
+       paddingTop:"20px",
+       paddingBottom:"20px"
+        
+
+    }
+    const timeButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
 
 
   
@@ -365,7 +417,7 @@ function WorkOutSessionPage()
                             {item.sets.map((set,setIndex)=>(
                                 <div className="exercise-set" key={`exercise-${index}-set-${setIndex}`}>
 
-                                    <ul style={{ listStyle: 'none', display: 'flex', gap: '1rem', padding: 0, margin: 0, alignItems: 'center' }}>
+                                    <ul style={setListStyle}>
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
                                         <li><h4>{set.type}</h4></li>
@@ -382,18 +434,18 @@ function WorkOutSessionPage()
                                 
                                 
                                 ))}
-                            <button onClick={() => handleAddSet(index)}>Add Set</button>
+                            <button style={AddSetButtonStyle}onClick={() => handleAddSet(index)}>Add Set</button>
                             </div>
                         ))}
                     </div>
                     
                     
                 </div>
-                <div className="time-controls">
-                <button onClick={handleStartTimer}> Start Timer</button>
-                <button onClick={handleStopTimer}>Stop Timer</button>
-                <button onClick={handleClearTimer}>Clear Timer</button>
-                <button onClick={handleEndWorkout}>End Workout</button>
+                <div className="time-controls" style={timeControlsStyle}>
+                <button style={timeButtonStyle} onClick={handleStartTimer}> Start Timer</button>
+                <button style={timeButtonStyle} onClick={handleStopTimer}>Stop Timer</button>
+                <button style={timeButtonStyle} onClick={handleClearTimer}>Clear Timer</button>
+                <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
                 </div>
             </div>
 
