@@ -262,7 +262,8 @@ function WorkOutSessionPage()
         flexDirection:"column",
         backgroundColor:"#D6D6D6",
         width:"100vw",
-        height:"100vh"
+        height:"100vh",
+        margin:"0",
 
     }
     const workoutSessionTitleStyle =
@@ -359,7 +360,7 @@ function WorkOutSessionPage()
     {
         marginTop:"auto",
        paddingTop:"20px",
-       paddingBottom:"20px"
+       paddingBottom:"50px"
         
 
     }

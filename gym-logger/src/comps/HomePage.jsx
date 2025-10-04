@@ -86,6 +86,8 @@ const homePageContainerStyle=
     position:"relative",
         height:"100vh",
         width:"100vw",
+        margin:"0",
+        overflow:"hidden",
         backgroundColor:"#D6D6D6"
 }
 const homePageHeaderStyle=
