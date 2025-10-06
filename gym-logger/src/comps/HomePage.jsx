@@ -83,7 +83,8 @@ const buttonsList = navigationButtons.map(
 
 const homePageContainerStyle=
 {
-    position:"relative",
+        display:"flex",
+        flexDirection:"column",
         height:"100vh",
         width:"100vw",
         margin:"0",
@@ -92,9 +93,7 @@ const homePageContainerStyle=
 }
 const homePageHeaderStyle=
 {
-        position:"absolute",
-        top:"0",
-        left:"0",
+        
         width:"100%",
         height:"8vh",
         margin:"0",
@@ -108,10 +107,11 @@ const homePageHeaderStyle=
 
 const navigationButtonContainerStyle=
 {
-    position:"absolute",
-    width:"100vw",
-    bottom:"10%",
     display:"flex",
+    width:"100vw",
+    margin:"auto"
+    
+    
     
   
  
@@ -133,7 +133,8 @@ const leftNavOptionButtonStyle=
     marginLeft:"10vw",
     fontSize:"64px",
     backgroundColor:"#D6D6D6",
-    border:"none"
+    border:"none",
+    color:"black"
 
     
 }
@@ -145,7 +146,8 @@ const rightNavOptionButtonStyle=
     marginRight:"10vw",
     fontSize:"64px",
     backgroundColor:"#D6D6D6",
-    border:"none"
+    border:"none",
+    color:"black"
 
 
 }
