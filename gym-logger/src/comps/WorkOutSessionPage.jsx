@@ -2,6 +2,7 @@ import React,{ useState, useEffect, useRef} from "react";
 
 function WorkOutSessionPage()
 {
+    const [startTime,setStartTime] = useState(0);
     const [isRunning, setIsRunning] =useState(false);
     const [time,setTime] = useState(()=>{
         const savedTime = localStorage.getItem("RawTime");
@@ -13,6 +14,13 @@ function WorkOutSessionPage()
     function handleStartTimer()
     {
         setIsRunning(true);
+        const currentRawTime = localStorage.getItem("RawTime");
+        if(currentRawTime === '0' || !currentRawTime)
+        {
+           setStartTime(Math.floor(Date.now()/1000)); 
+        }
+
+        
     }
     function handleStopTimer()
     {
@@ -23,6 +31,7 @@ function WorkOutSessionPage()
         setIsRunning(false);
         console.log(time);
         setTime(0);
+        setStartTime(0);
         localStorage.removeItem("RawTime");
 
     }
@@ -33,11 +42,21 @@ function WorkOutSessionPage()
         setIsRunning(false);
         console.log(time);
         setTime(0);
+        setStartTime(0);
         setExerciseList([]);
        
     }
 
-
+    useEffect(()=>{
+        const savedTime = localStorage.getItem("RawTime");
+        if(savedTime)
+        {
+            const now = Math.floor(Date.now()/1000);
+            setStartTime(now - parseInt(savedTime));
+            setTime(parseInt(savedTime));
+            setIsRunning(true);
+        }
+    },[]);
 
 
 
@@ -45,12 +64,13 @@ function WorkOutSessionPage()
     useEffect(()=>{
         if(isRunning)
         {
-            intervalRef.current = setInterval(()=>{setTime(prev=>prev+1)},1000);
+            clearInterval(intervalRef.current);
+            intervalRef.current =setInterval(()=>{setTime((Math.floor(Date.now()/1000))-startTime);},1000);
 
         }
         else
         {
-            clearInterval(intervalRef.current);
+           clearInterval(intervalRef.current);
         }
 
         return () => clearInterval(intervalRef.current);
@@ -63,7 +83,7 @@ function WorkOutSessionPage()
 
 
     const[timeFormated,setTimerFormated]=useState("");
-    useEffect(()=>{
+     useEffect(()=>{
         let min =0;
         let hr =0;
         let sec =0;
@@ -87,8 +107,14 @@ function WorkOutSessionPage()
         }
         localStorage.setItem("RawTime",time);
         setTimerFormated(`${hr}:${min}:${sec}`);
+
         
+       /*localStorage.setItem("RawTime",time);
+       setTimerFormated(time);
+       */
     },[time]);
+
+    
 
 
 
@@ -421,7 +447,6 @@ function WorkOutSessionPage()
                 <h1 className="timer" id="workout-timer" style={timerContainerStyle}>{timeFormated}</h1>
                 <div className="time-controls" style={timeControlsStyle}>
                 <button style={timeButtonStyle} onClick={handleStartTimer}> Start Timer</button>
-                <button style={timeButtonStyle} onClick={handleStopTimer}>Stop Timer</button>
                 <button style={timeButtonStyle} onClick={handleClearTimer}>Clear Timer</button>
                 <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
                 </div>
