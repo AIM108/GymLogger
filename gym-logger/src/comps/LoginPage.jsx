@@ -101,7 +101,8 @@ function LoginPage()
     {
         padding: "2px",
         margin:"1px",
-        border:"2px solid #ccc"
+        border:"2px solid #ccc",
+        fontSize:"16px"
         
     }
 
