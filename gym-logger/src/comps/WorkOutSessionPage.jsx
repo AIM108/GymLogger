@@ -23,14 +23,17 @@ function WorkOutSessionPage()
         setIsRunning(false);
         console.log(time);
         setTime(0);
+        localStorage.removeItem("RawTime");
 
     }
     function handleEndWorkout()
     {
-        localStorage.clear();
+        localStorage.removeItem("RawTime");
+        localStorage.removeItem("ExerciseList");
         setIsRunning(false);
         console.log(time);
         setTime(0);
+        setExerciseList([]);
        
     }
 
@@ -250,8 +253,37 @@ function WorkOutSessionPage()
         
     }
 
-    function handleOnChangeValueBox(value,exerciseIndexToUpdate,setIndexToUpdate)
+    function handleOnChangeValueBox(updatedValue,exerciseIndexToUpdate,setIndexToUpdate)
     {
+
+        setExerciseList(currentExerciseList=>
+        {
+            const updatedExerciseList = currentExerciseList.map((item,index)=>
+            {
+
+                if(index === exerciseIndexToUpdate)
+                {
+                    const updateExerciseSetList = item.sets.map((set,setIndex)=>
+                    {
+                        if(setIndex === setIndexToUpdate)
+                        {
+                            return {...set,value:updatedValue}
+
+                        }
+                        
+                        return set;
+                    })
+                    return{...item,sets:updateExerciseSetList}
+
+                }
+                return item;
+
+                
+            })
+
+            captureCurrentState(updatedExerciseList);
+            return updatedExerciseList;
+        });
         
     }
 
@@ -358,10 +390,8 @@ function WorkOutSessionPage()
 
     const timeControlsStyle=
     {
-        marginTop:"auto",
-       paddingTop:"20px",
-       paddingBottom:"50px"
-        
+       
+        marginBottom:"20px"
 
     }
     const timeButtonStyle=
@@ -381,6 +411,12 @@ function WorkOutSessionPage()
             <header className="workoutsession-header"id="workoutsession-page-content"  >
                 <h1 className="title" id="workoutsession-page-content" style={workoutSessionTitleStyle}>WorkOutSession Page</h1>
                 <h1 className="timer" id="workout-timer" style={timerContainerStyle}>{timeFormated}</h1>
+                <div className="time-controls" style={timeControlsStyle}>
+                <button style={timeButtonStyle} onClick={handleStartTimer}> Start Timer</button>
+                <button style={timeButtonStyle} onClick={handleStopTimer}>Stop Timer</button>
+                <button style={timeButtonStyle} onClick={handleClearTimer}>Clear Timer</button>
+                <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
+                </div>
             </header>
 
             <div className="main-content" style={mainContainerStyle}>
@@ -422,7 +458,7 @@ function WorkOutSessionPage()
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
                                         <li><h4>{set.type}</h4></li>
-                                        <li><input type="number" style={setValueInputStyle}/></li>
+                                        <li><input type="number" style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
                                     </ul>
                                     
                                     
@@ -442,12 +478,7 @@ function WorkOutSessionPage()
                     
                     
                 </div>
-                <div className="time-controls" style={timeControlsStyle}>
-                <button style={timeButtonStyle} onClick={handleStartTimer}> Start Timer</button>
-                <button style={timeButtonStyle} onClick={handleStopTimer}>Stop Timer</button>
-                <button style={timeButtonStyle} onClick={handleClearTimer}>Clear Timer</button>
-                <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
-                </div>
+                
             </div>
 
         </div>
