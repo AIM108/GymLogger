@@ -350,6 +350,7 @@ function WorkOutSessionPage()
     {
         flex:"1",
         minWidth:"0",
+        fontSize:"16px",
         border:"1px outset black",
         fontFamily:"Andale Mono, monospace",
         color:"black"
@@ -363,6 +364,11 @@ function WorkOutSessionPage()
         color:"black"
     }
 
+    const exerciseListContainerStyle=
+    {
+        marginBottom:"80px"
+    }
+
     const setListStyle=
     { listStyle: 'none', 
         display: 'flex', 
@@ -371,6 +377,7 @@ function WorkOutSessionPage()
         margin: 0, 
         alignItems: 'center',
         justifyContent:"center"
+        
     }
 
     const setValueInputStyle=
@@ -378,7 +385,8 @@ function WorkOutSessionPage()
         width:"30px",
         border:"1px outset black",
         fontFamily:"Andale Mono, monospace",
-        color:"black"
+        color:"black",
+        fontSize:"16px"
     }
 
     const AddSetButtonStyle=
@@ -426,13 +434,13 @@ function WorkOutSessionPage()
                         
                         
                         <select style={inputWorkoutStyle} ref={inputeElement => inputExercise.current.exerciseType = inputeElement}>
-                            <option value="">Select Type</option>
+                            <option value="">Type</option>
                             <option value="REPS">REPS</option>
                             <option value="TIME">TIME</option>
                         </select>
                         
                         <select style={inputWorkoutStyle} ref={inputeElement => inputExercise.current.exerciseFocus = inputeElement}>
-                            <option value="">Select Focus</option>
+                            <option value="">Focus</option>
                             <option value="Weight">Weight</option>
                             <option value="Cardio">Cardio</option>
                         </select>
@@ -447,7 +455,7 @@ function WorkOutSessionPage()
                     <button className="add-exersice-button" style={addExersiceStyle} onClick={handleAddToExecutingExersizeList}>Add Exersice to List</button>
 
 
-                    <div className="exerciseList">
+                    <div className="exerciseList" style={exerciseListContainerStyle}>
                         {exerciseList.map((item, index) => (
                             <div key={index} className="exerciseItem">
                             <h2>{item.exercise.exerciseName}</h2>
