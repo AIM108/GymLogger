@@ -175,7 +175,7 @@ const rightNavOptionButtonStyle=
 
 
 return(
-    <div className="home-page-container" style={homePageContainerStyle}>
+    <div className="home-page-container" style={homePageContainerStyle} ref={containerRef}>
 
         
             <h1 className="page-header" style={homePageHeaderStyle}>{pageInView}</h1>
