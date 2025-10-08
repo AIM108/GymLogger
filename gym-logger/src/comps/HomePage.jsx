@@ -51,18 +51,12 @@ const [buttonIndex, setButtonIndex] = useState(0);
       
     }
 
-    function handleSignOut()
-    {
-        localStorage.removeItem('token');
-    }
-    function handleStartWorkout()
-    {
-
-    }
-    function handleViewHistory()
-    {
-
-    }
+        useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = 0;
+        }
+        }, []);
+    
 
     useEffect(()=>
     {
