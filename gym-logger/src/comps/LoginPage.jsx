@@ -56,7 +56,8 @@ function LoginPage()
         padding:"0",
         margin:"0",
         overflow:"hidden",
-        backgroundColor:"#D6D6D6"
+        backgroundColor:"#D6D6D6",
+        overflowY:"auto"
         
 
     }

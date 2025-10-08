@@ -6,7 +6,14 @@ function NavigationButton({name, navigationRout,id, style})
 {
     
     const navigate = useNavigate();
-    const handleClick = () =>{navigate(navigationRout);}
+    const handleClick = () =>{
+        if(id === 'SignOut')
+        {
+            localStorage.removeItem('token');
+        }
+    
+        navigate(navigationRout);
+    }
 
 
 
