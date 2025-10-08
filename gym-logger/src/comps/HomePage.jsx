@@ -9,14 +9,20 @@ function HomePage()
 
 const navigationButtons =
 [
-        { id:'QuickStart', name: 'Start', navigationRout: '/workoutsession' },
-        { id:'RoutineWorkout', name: 'Start', navigationRout: '/workoutsession' },
-        { id:'CreateRoutine', name: 'Create', navigationRout: '/workoutsession' },
-        { id:'History', name: 'View', navigationRout: '/workoutsession' },
-        { id:'SignOut',name: 'Sign Out', navigationRout: '/workoutsession' }
+        { id:'QuickStart', name: 'Start', navigationRout: '/workoutsession'},
+        { id:'SignOut',name: 'Sign Out', navigationRout: '/',action: handleSignOut }
 
 
 ]
+
+
+/*
+Button that will be implemented in the future
+{ id:'History', name: 'View', navigationRout: '/workoutsession' },
+{ id:'RoutineWorkout', name: 'Start', navigationRout: '/workoutsession' },
+{ id:'CreateRoutine', name: 'Create', navigationRout: '/workoutsession' },
+
+*/
 
 const [pageInView, setPageInView] = useState('QuickStart');
 const [buttonIndex, setButtonIndex] = useState(0);
@@ -43,6 +49,19 @@ const [buttonIndex, setButtonIndex] = useState(0);
       })
       
       
+    }
+
+    function handleSignOut()
+    {
+        localStorage.removeItem('token');
+    }
+    function handleStartWorkout()
+    {
+
+    }
+    function handleViewHistory()
+    {
+
     }
 
     useEffect(()=>
@@ -78,7 +97,7 @@ const [buttonIndex, setButtonIndex] = useState(0);
     } ,[buttonIndex]);
 
 const buttonsList = navigationButtons.map(
-    (buttonElement, index) => (<NavigationButton key={index} name={buttonElement.name} navigationRout={buttonElement.navigationRout}/>)
+    (buttonElement, index) => (<NavigationButton key={index} name={buttonElement.name} navigationRout={buttonElement.navigationRout} id={buttonElement.id}/>)
 );
 
 const homePageContainerStyle=
@@ -89,7 +108,8 @@ const homePageContainerStyle=
         width:"100vw",
         margin:"0",
         overflow:"hidden",
-        backgroundColor:"#D6D6D6"
+        backgroundColor:"#D6D6D6",
+        overflowY:"auto"
 }
 const homePageHeaderStyle=
 {
