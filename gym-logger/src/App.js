@@ -9,6 +9,12 @@ import WorkOutSessionPage from './comps/WorkOutSessionPage';
 import HomePage from './comps/HomePage';
 
 function App() {
+
+
+ 
+
+
+
   return (
     <>
     

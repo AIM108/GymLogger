@@ -1,16 +1,24 @@
 
 import NavigationButton from "./buttons/NavigationButton";
-import React,{ useState, useEffect} from "react";
+import React,{ useState, useEffect, useRef} from "react";
 
 
 function HomePage()
 {
 
+  const containerRef = useRef();
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, []);
+
 
 const navigationButtons =
 [
         { id:'QuickStart', name: 'Start', navigationRout: '/workoutsession'},
-        { id:'SignOut',name: 'Sign Out', navigationRout: '/',action: handleSignOut }
+        { id:'SignOut',name: 'Sign Out', navigationRout: '/' }
 
 
 ]
@@ -51,11 +59,7 @@ const [buttonIndex, setButtonIndex] = useState(0);
       
     }
 
-        useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTop = 0;
-        }
-        }, []);
+        
     
 
     useEffect(()=>
