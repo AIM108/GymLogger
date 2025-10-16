@@ -281,11 +281,40 @@ function WorkOutSessionPage()
             
            })
            captureCurrentState(updated);
-           return updated;}
-       );
+           return updated;
+        });
 
 
      
+
+    }
+
+
+
+
+    function handleRemoveSet(indexToUpdate)
+    {
+
+        setExerciseList(prev=>{
+            const updated =prev.map((item,index)=>{
+                if(index ===indexToUpdate)
+                {
+                    
+                    const updatedSetList = item.sets.slice(0,-1);
+                    return{...item,sets:updatedSetList};
+
+                }
+
+
+
+                return item;
+            })
+
+
+
+
+            return updated;
+        });
 
     }
 
@@ -477,6 +506,13 @@ function WorkOutSessionPage()
         color:"black"
     }
 
+    const RemoveSetButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
     const timeControlsStyle=
     {
        
@@ -592,6 +628,7 @@ function WorkOutSessionPage()
                                 
                                 ))}
                             <button style={AddSetButtonStyle}onClick={() => handleAddSet(index)}>Add Set</button>
+                            <button style={RemoveSetButtonStyle} onClick={() => handleRemoveSet(index)}>Remove Set</button>
                             </div>
                         ))}
                     </div>
