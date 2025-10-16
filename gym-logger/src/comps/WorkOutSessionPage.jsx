@@ -1,7 +1,30 @@
-import React,{ useState, useEffect, useRef} from "react";
+import React,{ useState, useEffect, useRef, useContext} from "react";
+import {useBlocker} from 'react-router-dom'
 
 function WorkOutSessionPage()
 {
+
+    //Page navigation
+   const [isDataOnPagedNotSaved, setIsDataOnPageNotSaved] = useState(true);
+   const [showPopUp,setShowPopUp] =useState(false);
+   const blockerInstance = useBlocker(isDataOnPagedNotSaved);
+    useEffect(()=>
+    {
+        if(blockerInstance.state ==='blocked')
+        {
+            setShowPopUp(true);
+            console.log('During useEffect: ',isDataOnPagedNotSaved);
+        }
+
+        
+
+    },[blockerInstance]);
+
+
+
+
+
+    //Timer
     const [startTime,setStartTime] = useState(0);
     const [isRunning, setIsRunning] =useState(false);
     const [time,setTime] = useState(()=>{
@@ -13,6 +36,7 @@ function WorkOutSessionPage()
 
     function handleStartTimer()
     {
+        
         setIsRunning(true);
         const currentRawTime = localStorage.getItem("RawTime");
         if(currentRawTime === '0' || !currentRawTime)
@@ -44,6 +68,8 @@ function WorkOutSessionPage()
         setTime(0);
         setStartTime(0);
         setExerciseList([]);
+        setIsDataOnPageNotSaved(false);
+        console.log('During endworkout: ',isDataOnPagedNotSaved);
        
     }
 
@@ -447,7 +473,14 @@ function WorkOutSessionPage()
         fontFamily:"Andale Mono, monospace",
         color:"black"
     }
+    const popupStyle=
+    {
+        position:"absolute",
+        zIndex:"9999",
+        backgroundColor:"white",
 
+
+    }
 
   
 
@@ -464,6 +497,13 @@ function WorkOutSessionPage()
                 <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
                 </div>
             </header>
+
+            {showPopUp?(<div className="navigation-popup" style={popupStyle}>
+                <h3>Temp Message</h3>
+                <button >Yes</button>
+                <button >No</button>
+
+            </div>):null}
 
             <div className="main-content" style={mainContainerStyle}>
                 <div className="exercise-content">

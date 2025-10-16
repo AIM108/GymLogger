@@ -1,6 +1,7 @@
 
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import MaintenancePage from './comps/MaintenancePage';
 import LoginPage from './comps/LoginPage';
 import MenuePage from './comps/MenuePage';
@@ -11,6 +12,25 @@ import HomePage from './comps/HomePage';
 function App() {
 
 
+  const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LoginPage />,
+  },
+  {
+    path: '/home',
+    element: <HomePage />,
+  },
+  {
+    path: '/workoutsession',
+    element: <WorkOutSessionPage />,
+  },
+  {
+    path: '/workoutcomplete',
+    element: <WorkOutCompletePage />,
+  },
+]);
+
  
 
 
@@ -20,15 +40,8 @@ function App() {
     
     <div className="mobile-web-App">
       {
-     
-      <BrowserRouter>
-        <Routes>
-                <Route path="/" element={<LoginPage/>} />
-                <Route path="/home" element={<HomePage/>} />
-                <Route path="/workoutsession" element={<WorkOutSessionPage/>} />
-                <Route path="/workoutcomplete" element={<WorkOutCompletePage/>} />
-        </Routes>
-      </BrowserRouter>
+        <RouterProvider router={router}/>
+      
       }
       
     </div>
