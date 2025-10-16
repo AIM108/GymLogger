@@ -13,12 +13,28 @@ function WorkOutSessionPage()
         if(blockerInstance.state ==='blocked')
         {
             setShowPopUp(true);
-            console.log('During useEffect: ',isDataOnPagedNotSaved);
+            
         }
 
         
 
     },[blockerInstance]);
+
+    function handleLeavePage()
+    {
+
+       
+        blockerInstance.proceed();
+        setShowPopUp(false);
+
+    }
+
+    function handleStayOnPage()
+    {
+        
+        setShowPopUp(false);
+
+    }
 
 
 
@@ -478,6 +494,24 @@ function WorkOutSessionPage()
         position:"absolute",
         zIndex:"9999",
         backgroundColor:"white",
+        top:"50%",
+        left:"50%",
+        transform:"translate(-50%,-50%)",
+        border:'solid black',
+        padding:"15px",
+        fontFamily:"Andale Mono, monospace",
+
+        
+
+
+    }
+    const navigationbuttonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black",
+        width:"15vw",
+        margin:"2px"
 
 
     }
@@ -499,9 +533,9 @@ function WorkOutSessionPage()
             </header>
 
             {showPopUp?(<div className="navigation-popup" style={popupStyle}>
-                <h3>Temp Message</h3>
-                <button >Yes</button>
-                <button >No</button>
+                <p>Work out has not been saved yet, do you still wish to exit?</p>
+                <button style={navigationbuttonStyle} onClick={handleLeavePage}>Yes</button>
+                <button style={navigationbuttonStyle} onClick={handleStayOnPage}>No</button>
 
             </div>):null}
 
@@ -544,7 +578,7 @@ function WorkOutSessionPage()
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
                                         <li><h4>{set.type}</h4></li>
-                                        <li><input type="number" style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
+                                        <li><input type="number" value ={set.value} style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
                                     </ul>
                                     
                                     
