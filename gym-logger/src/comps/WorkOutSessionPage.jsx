@@ -179,7 +179,7 @@ function WorkOutSessionPage()
         const name =inputExercise.current.exerciseName?.value;
         const type =inputExercise.current.exerciseType?.value;
         const focus =inputExercise.current.exerciseFocus?.value;
-        if(name)
+        if(name && type && focus )
         {
         const ex = new ExecutedExersize(handleAddExersize(name,type,focus));
         setExerciseList(prev=>{
@@ -188,6 +188,19 @@ function WorkOutSessionPage()
                     captureCurrentState(updated);
                     return updated;
                     });
+
+        if(inputExercise.current)
+        {
+
+
+            inputExercise.current.exerciseName.value='';
+            inputExercise.current.exerciseType.value='';
+            inputExercise.current.exerciseFocus.value='';
+            inputExercise.current.exerciseName=null;
+            inputExercise.current.exerciseType=null;
+            inputExercise.current.exerciseFocus=null;
+            console.log(inputExercise.current);
+        }
         
         }
         else
