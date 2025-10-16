@@ -678,8 +678,8 @@ function WorkOutSessionPage()
                                     <ul style={setListStyle}>
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
-                                        <li><h4>{set.focus === "Weight" ? "Weight" : null}</h4></li>
-                                        <li>{set.focus === "Weight" ? <input type="number" value ={set.weight} onChange={(e)=>handleOnChangeWeightValueBox(e.target.value,index,setIndex)}style={setValueInputStyle} /> : null}</li>
+                                        <li><h4>{item.exercise.exerciseFocus === "Weight" ? "Weight" : null}</h4></li>
+                                        <li>{item.exercise.exerciseFocus === "Weight" ? <input type="number" value ={set.weight} onChange={(e)=>handleOnChangeWeightValueBox(e.target.value,index,setIndex)}style={setValueInputStyle} /> : null}</li>
                                         <li><h4>{set.type}</h4></li>
                                         <li><input type="number" value ={set.value} style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
                                     </ul>
