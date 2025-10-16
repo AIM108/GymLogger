@@ -1,7 +1,46 @@
-import React,{ useState, useEffect, useRef} from "react";
+import React,{ useState, useEffect, useRef, useContext} from "react";
+import {useBlocker} from 'react-router-dom'
 
 function WorkOutSessionPage()
 {
+
+    //Page navigation
+   const [isDataOnPagedNotSaved, setIsDataOnPageNotSaved] = useState(true);
+   const [showPopUp,setShowPopUp] =useState(false);
+   const blockerInstance = useBlocker(isDataOnPagedNotSaved);
+    useEffect(()=>
+    {
+        if(blockerInstance.state ==='blocked')
+        {
+            setShowPopUp(true);
+            
+        }
+
+        
+
+    },[blockerInstance]);
+
+    function handleLeavePage()
+    {
+
+       
+        blockerInstance.proceed();
+        setShowPopUp(false);
+
+    }
+
+    function handleStayOnPage()
+    {
+        
+        setShowPopUp(false);
+
+    }
+
+
+
+
+
+    //Timer
     const [startTime,setStartTime] = useState(0);
     const [isRunning, setIsRunning] =useState(false);
     const [time,setTime] = useState(()=>{
@@ -13,6 +52,7 @@ function WorkOutSessionPage()
 
     function handleStartTimer()
     {
+        
         setIsRunning(true);
         const currentRawTime = localStorage.getItem("RawTime");
         if(currentRawTime === '0' || !currentRawTime)
@@ -44,6 +84,8 @@ function WorkOutSessionPage()
         setTime(0);
         setStartTime(0);
         setExerciseList([]);
+        setIsDataOnPageNotSaved(false);
+        console.log('During endworkout: ',isDataOnPagedNotSaved);
        
     }
 
@@ -135,6 +177,7 @@ function WorkOutSessionPage()
         {
             this.isCompleted="NotCompleted";
             this.setNumber=1;
+            this.weight=0;
             this.type=type;
             this.value=0;
         }
@@ -179,7 +222,7 @@ function WorkOutSessionPage()
         const name =inputExercise.current.exerciseName?.value;
         const type =inputExercise.current.exerciseType?.value;
         const focus =inputExercise.current.exerciseFocus?.value;
-        if(name)
+        if(name && type && focus )
         {
         const ex = new ExecutedExersize(handleAddExersize(name,type,focus));
         setExerciseList(prev=>{
@@ -188,6 +231,19 @@ function WorkOutSessionPage()
                     captureCurrentState(updated);
                     return updated;
                     });
+
+        if(inputExercise.current)
+        {
+
+
+            inputExercise.current.exerciseName.value='';
+            inputExercise.current.exerciseType.value='';
+            inputExercise.current.exerciseFocus.value='';
+            inputExercise.current.exerciseName=null;
+            inputExercise.current.exerciseType=null;
+            inputExercise.current.exerciseFocus=null;
+            console.log(inputExercise.current);
+        }
         
         }
         else
@@ -226,11 +282,63 @@ function WorkOutSessionPage()
             
            })
            captureCurrentState(updated);
-           return updated;}
-       );
+           return updated;
+        });
 
 
      
+
+    }
+
+
+
+
+    function handleRemoveSet(indexToUpdate)
+    {
+
+        setExerciseList(prev=>{
+            const updated =prev.map((item,index)=>{
+                if(index ===indexToUpdate)
+                {
+                    
+                    const updatedSetList = item.sets.slice(0,-1);
+                    return{...item,sets:updatedSetList};
+
+                }
+
+
+
+                return item;
+            })
+
+
+
+            captureCurrentState(updated);
+            return updated;
+        });
+
+    }
+
+
+
+
+    function handleRemoveWorkout(indexToRemove)
+    {
+
+
+        setExerciseList(prev=>{
+            const updated = prev.filter((item,i)=>i !== indexToRemove);
+
+
+
+            captureCurrentState(updated);
+            return updated;
+
+
+
+
+
+        });
 
     }
 
@@ -277,6 +385,38 @@ function WorkOutSessionPage()
 
 
         
+    }
+    function handleOnChangeWeightValueBox(updatedValue,exerciseIndexToUpdate,setIndexToUpdate)
+    {
+        setExerciseList(currentExerciseList=>
+        {
+            const updatedExerciseList = currentExerciseList.map((item,index)=>
+            {
+
+                if(index === exerciseIndexToUpdate)
+                {
+                    const updateExerciseSetList = item.sets.map((set,setIndex)=>
+                    {
+                        if(setIndex === setIndexToUpdate)
+                        {
+                            return {...set,weight:updatedValue}
+
+                        }
+                        
+                        return set;
+                    })
+                    return{...item,sets:updateExerciseSetList}
+
+                }
+                return item;
+
+                
+            })
+
+            captureCurrentState(updatedExerciseList);
+            return updatedExerciseList;
+        });
+
     }
 
     function handleOnChangeValueBox(updatedValue,exerciseIndexToUpdate,setIndexToUpdate)
@@ -422,6 +562,22 @@ function WorkOutSessionPage()
         color:"black"
     }
 
+    const RemoveSetButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
+
+    const RemoveWorkoutButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
+
     const timeControlsStyle=
     {
        
@@ -434,7 +590,32 @@ function WorkOutSessionPage()
         fontFamily:"Andale Mono, monospace",
         color:"black"
     }
+    const popupStyle=
+    {
+        position:"absolute",
+        zIndex:"9999",
+        backgroundColor:"white",
+        top:"50%",
+        left:"50%",
+        transform:"translate(-50%,-50%)",
+        border:'solid black',
+        padding:"15px",
+        fontFamily:"Andale Mono, monospace",
 
+        
+
+
+    }
+    const navigationbuttonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black",
+        width:"15vw",
+        margin:"2px"
+
+
+    }
 
   
 
@@ -451,6 +632,13 @@ function WorkOutSessionPage()
                 <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
                 </div>
             </header>
+
+            {showPopUp?(<div className="navigation-popup" style={popupStyle}>
+                <p>Work out has not been saved yet, do you still wish to exit?</p>
+                <button style={navigationbuttonStyle} onClick={handleLeavePage}>Yes</button>
+                <button style={navigationbuttonStyle} onClick={handleStayOnPage}>No</button>
+
+            </div>):null}
 
             <div className="main-content" style={mainContainerStyle}>
                 <div className="exercise-content">
@@ -490,8 +678,10 @@ function WorkOutSessionPage()
                                     <ul style={setListStyle}>
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
+                                        <li><h4>{set.focus === "Weight" ? "Weight" : null}</h4></li>
+                                        <li>{set.focus === "Weight" ? <input type="number" value ={set.weight} onChange={(e)=>handleOnChangeWeightValueBox(e.target.value,index,setIndex)}style={setValueInputStyle} /> : null}</li>
                                         <li><h4>{set.type}</h4></li>
-                                        <li><input type="number" style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
+                                        <li><input type="number" value ={set.value} style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
                                     </ul>
                                     
                                     
@@ -505,6 +695,8 @@ function WorkOutSessionPage()
                                 
                                 ))}
                             <button style={AddSetButtonStyle}onClick={() => handleAddSet(index)}>Add Set</button>
+                            <button style={RemoveSetButtonStyle} onClick={() => handleRemoveSet(index)}>Remove Set</button>
+                            <button style={RemoveWorkoutButtonStyle} onClick={()=> handleRemoveWorkout(index)}>Remove Workout</button>
                             </div>
                         ))}
                     </div>
