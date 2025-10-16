@@ -177,6 +177,7 @@ function WorkOutSessionPage()
         {
             this.isCompleted="NotCompleted";
             this.setNumber=1;
+            this.weight=0;
             this.type=type;
             this.value=0;
         }
@@ -312,8 +313,31 @@ function WorkOutSessionPage()
 
 
 
-
+            captureCurrentState(updated);
             return updated;
+        });
+
+    }
+
+
+
+
+    function handleRemoveWorkout(indexToRemove)
+    {
+
+
+        setExerciseList(prev=>{
+            const updated = prev.filter((item,i)=>i !== indexToRemove);
+
+
+
+            captureCurrentState(updated);
+            return updated;
+
+
+
+
+
         });
 
     }
@@ -361,6 +385,38 @@ function WorkOutSessionPage()
 
 
         
+    }
+    function handleOnChangeWeightValueBox(updatedValue,exerciseIndexToUpdate,setIndexToUpdate)
+    {
+        setExerciseList(currentExerciseList=>
+        {
+            const updatedExerciseList = currentExerciseList.map((item,index)=>
+            {
+
+                if(index === exerciseIndexToUpdate)
+                {
+                    const updateExerciseSetList = item.sets.map((set,setIndex)=>
+                    {
+                        if(setIndex === setIndexToUpdate)
+                        {
+                            return {...set,weight:updatedValue}
+
+                        }
+                        
+                        return set;
+                    })
+                    return{...item,sets:updateExerciseSetList}
+
+                }
+                return item;
+
+                
+            })
+
+            captureCurrentState(updatedExerciseList);
+            return updatedExerciseList;
+        });
+
     }
 
     function handleOnChangeValueBox(updatedValue,exerciseIndexToUpdate,setIndexToUpdate)
@@ -513,6 +569,15 @@ function WorkOutSessionPage()
         color:"black"
     }
 
+
+    const RemoveWorkoutButtonStyle=
+    {
+        border:"1px outset black",
+        fontFamily:"Andale Mono, monospace",
+        color:"black"
+    }
+
+
     const timeControlsStyle=
     {
        
@@ -613,6 +678,8 @@ function WorkOutSessionPage()
                                     <ul style={setListStyle}>
                                         <li><input type="checkbox" checked={set.isCompleted === "Completed"}onChange={(e)=>handleOnChangeCheckBox(e.target.checked,index,setIndex)}/></li>
                                         <li><h4>SET {set.setNumber}</h4></li>
+                                        <li><h4>{set.focus === "Weight" ? "Weight" : null}</h4></li>
+                                        <li>{set.focus === "Weight" ? <input type="number" value ={set.weight} onChange={(e)=>handleOnChangeWeightValueBox(e.target.value,index,setIndex)}style={setValueInputStyle} /> : null}</li>
                                         <li><h4>{set.type}</h4></li>
                                         <li><input type="number" value ={set.value} style={setValueInputStyle} onChange={(e)=>handleOnChangeValueBox(e.target.value,index,setIndex)}/></li>
                                     </ul>
@@ -629,6 +696,7 @@ function WorkOutSessionPage()
                                 ))}
                             <button style={AddSetButtonStyle}onClick={() => handleAddSet(index)}>Add Set</button>
                             <button style={RemoveSetButtonStyle} onClick={() => handleRemoveSet(index)}>Remove Set</button>
+                            <button style={RemoveWorkoutButtonStyle} onClick={()=> handleRemoveWorkout(index)}>Remove Workout</button>
                             </div>
                         ))}
                     </div>
