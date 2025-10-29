@@ -107,19 +107,19 @@ function WorkOutSessionPage()
             });
 
             const response_data =await response.json();
-            const body =   JSON.parse(response_data.body);
+          
 
             if(response_data.statusCode === 404)
             {
-                console.log(body.error);
+                console.log(response_data.error);
             }
             else
             {
                 
-                const message = body.message;
+                const message = response_data.message;
 
                 
-                console.log('Response: ',response_data);
+                console.log('Response: ',message);
                
 
 
