@@ -1,5 +1,5 @@
 import React,{ useState, useEffect, useRef, useContext} from "react";
-import {useBlocker} from 'react-router-dom'
+import {data, useBlocker} from 'react-router-dom'
 
 function WorkOutSessionPage()
 {
@@ -66,16 +66,7 @@ function WorkOutSessionPage()
     {
         setIsRunning(false);
     }
-    function handleClearTimer()
-    {
-        setIsRunning(false);
-        console.log(time);
-        setTime(0);
-        setStartTime(0);
-        localStorage.removeItem("RawTime");
-
-    }
-    function handleEndWorkout()
+    function handleClearWorkout()
     {
         localStorage.removeItem("RawTime");
         localStorage.removeItem("ExerciseList");
@@ -85,7 +76,72 @@ function WorkOutSessionPage()
         setStartTime(0);
         setExerciseList([]);
         setIsDataOnPageNotSaved(false);
-        console.log('During endworkout: ',isDataOnPagedNotSaved);
+        
+    
+
+    }
+    async function handleEndWorkout()
+    {
+        
+        try
+        {
+            const user_name_logged_in ='UserOne';
+            const workout_time= localStorage.getItem("RawTime");
+            const exercise_list_data= localStorage.getItem('ExerciseList');
+            const token = localStorage.getItem('token');
+            
+
+
+            const response = await fetch('https://2n87ed40yj.execute-api.us-east-2.amazonaws.com/GymLogger/',{
+                method:'POST',
+                headers: {'Content-Type':'application/json',
+                    "Authorization":`Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    user_name:user_name_logged_in,
+                    workout_time_elapsed: workout_time,
+                    calendar_date:'10-29-2025',
+                    workout_data: exercise_list_data
+                })
+                
+            });
+
+            const response_data =await response.json();
+            const body =   JSON.parse(response_data.body);
+
+            if(response_data.statusCode === 404)
+            {
+                console.log(body.error);
+            }
+            else
+            {
+                
+                const message = body.message;
+
+                
+                console.log('Response: ',response_data);
+               
+
+
+            }
+
+
+
+
+            //send to AWS logic, get response 200 back after PUT request
+            console.log("Workout Session: ",localStorage.getItem("ExerciseList"));
+
+        }catch(err)
+        {
+            console.log(err);
+        }
+        localStorage.removeItem("RawTime");
+        localStorage.removeItem("ExerciseList");
+        setIsRunning(false);
+        setTime(0);
+        setStartTime(0);
+        setExerciseList([]);
+        setIsDataOnPageNotSaved(false);
        
     }
 
@@ -177,9 +233,9 @@ function WorkOutSessionPage()
         {
             this.isCompleted="NotCompleted";
             this.setNumber=1;
-            this.weight=0;
+            this.weight='';
             this.type=type;
-            this.value=0;
+            this.value='';
         }
     }
 
@@ -227,7 +283,6 @@ function WorkOutSessionPage()
         const ex = new ExecutedExersize(handleAddExersize(name,type,focus));
         setExerciseList(prev=>{
                     const updated = [...prev, ex];
-                    console.log("Updated exercise list:", updated);
                     captureCurrentState(updated);
                     return updated;
                     });
@@ -242,7 +297,7 @@ function WorkOutSessionPage()
             inputExercise.current.exerciseName=null;
             inputExercise.current.exerciseType=null;
             inputExercise.current.exerciseFocus=null;
-            console.log(inputExercise.current);
+            
         }
         
         }
@@ -628,7 +683,7 @@ function WorkOutSessionPage()
                 <h1 className="timer" id="workout-timer" style={timerContainerStyle}>{timeFormated}</h1>
                 <div className="time-controls" style={timeControlsStyle}>
                 <button style={timeButtonStyle} onClick={handleStartTimer}> Start Timer</button>
-                <button style={timeButtonStyle} onClick={handleClearTimer}>Clear Timer</button>
+                <button style={timeButtonStyle} onClick={handleClearWorkout}>Clear Workout</button>
                 <button style={timeButtonStyle} onClick={handleEndWorkout}>End Workout</button>
                 </div>
             </header>
